@@ -1,0 +1,23 @@
+{
+  "name": "simple-react",
+  "version": "0.0.1",
+  "description": "simple react",
+  "main": "dist/react.js",
+  "scripts": {
+    "start": "parcel ./index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hujiulong/simple-react.git"
+  },
+  "author": "Jiulong Hu <me@hujiulong.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hujiulong/simple-react/issues"
+  },
+  "homepage": "https://github.com/hujiulong/simple-react#readme",
+  "devDependencies": {
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-env": "^1.6.1"
+  }
+}
