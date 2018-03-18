@@ -1,12 +1,21 @@
-function h( tag, attrs, ...children ) {
+const React = {
+    createElement
+}
+
+const ReactDOM = {
+    render: ( vnode, container ) => {
+        container.innerHTML = '';
+        return render( vnode, container );
+    }
+}
+
+function createElement( tag, attrs, ...children ) {
     return {
         tag,
         attrs,
         children
     }
 }
-
-const node = <div className="a">a <span></span></div>;
 
 function render( vnode, container ) {
 
@@ -20,8 +29,6 @@ function render( vnode, container ) {
     if ( vnode.attrs ) {
         Object.keys( vnode.attrs ).forEach( key => {
 
-            // http://www.jackpu.com/you-qu-de-hua-ti-wei-shi-yao-jsxyong-classnameer-bu-shi-class/
-            // https://groups.google.com/forum/#!topic/reactjs/xovHWHGHPCA
             if ( key === 'className' ) key = 'class';
 
             dom.setAttribute( key, vnode.attrs[ key ] )
@@ -33,4 +40,17 @@ function render( vnode, container ) {
     return container.appendChild( dom );
 }
 
-render( node, document.getElementById( 'root' ) );
+function tick() {
+    const element = (
+        <div>
+            <h1>Hello, world!</h1>
+            <h2>It is {new Date().toLocaleTimeString()}.</h2>
+        </div>
+      );
+    ReactDOM.render(
+        element,
+        document.getElementById( 'root' )
+    );
+}
+
+setInterval( tick, 1000 );
