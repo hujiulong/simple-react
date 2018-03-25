@@ -1,5 +1,11 @@
 function _render( vnode, container ) {
 
+    if ( !vnode ) return;
+
+    if ( vnode.isReactComponent ) {
+        vnode = vnode.render();
+    }
+
     if ( typeof vnode === 'string' ) {
         let textNode = document.createTextNode( vnode );
         return container.appendChild( textNode );
@@ -10,13 +16,23 @@ function _render( vnode, container ) {
     if ( vnode.attrs ) {
         Object.keys( vnode.attrs ).forEach( key => {
 
+            const value = vnode.attrs[ key ];
+
             if ( key === 'className' ) key = 'class';
 
-            dom.setAttribute( key, vnode.attrs[ key ] )
+            // 如果是事件监听函数，则直接附加到dom上
+            if ( typeof value === 'function' ) {
+                dom[ key.toLowerCase() ] = value;
+            } else {
+                dom.setAttribute( key, vnode.attrs[ key ] );
+            }
+
         } );
     }
 
-    vnode.children.forEach( child => _render( child, dom ) );
+    if ( vnode.children ) {
+        vnode.children.forEach( child => _render( child, dom ) );
+    }
 
     return container.appendChild( dom );
 }
@@ -26,6 +42,4 @@ function render( vnode, container ) {
     return _render( vnode, container );
 }
 
-export default {
-    render
-}
+export default render;
