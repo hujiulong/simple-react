@@ -1,3 +1,5 @@
+import ReactDOM from '../react-dom'
+
 class Component {
     constructor( props = {} ) {
         this.isReactComponent = true;
@@ -7,7 +9,10 @@ class Component {
     }
 
     setState( stateChange ) {
-        return Object.assign( this.state, stateChange );
+        Object.assign( this.state, stateChange );
+        if ( this._container ) {
+            ReactDOM.render( this, this._container );
+        }
     }
 }
 
