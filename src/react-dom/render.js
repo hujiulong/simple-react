@@ -1,12 +1,24 @@
 function _render( vnode, container ) {
 
-    if ( !vnode ) return;
+    if ( vnode === undefined ) return;
 
     if ( vnode.isReactComponent ) {
-        vnode = vnode.render();
+        const component = vnode;
+
+        if ( component._container ) {
+            if ( component.componentDidUpdate ) {
+                component.componentDidUpdate();
+            }
+        } else if ( component.componentDidMount ) {
+            component.componentDidMount();
+        }
+
+        component._container = container;   // 保存父容器信息，用于更新
+
+        vnode = component.render();
     }
 
-    if ( typeof vnode === 'string' ) {
+    if ( typeof vnode === 'string' || typeof vnode === 'number' ) {
         let textNode = document.createTextNode( vnode );
         return container.appendChild( textNode );
     }
