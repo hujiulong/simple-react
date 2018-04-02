@@ -1,3 +1,5 @@
+import { diff } from './diff'
+
 function _render( vnode, container ) {
 
     if ( vnode === undefined ) return;
@@ -6,11 +8,11 @@ function _render( vnode, container ) {
         const component = vnode;
 
         if ( component._container ) {
-            if ( component.componentDidUpdate ) {
-                component.componentDidUpdate();
+            if ( component.componentWillUpdate ) {
+                component.componentWillUpdate();
             }
-        } else if ( component.componentDidMount ) {
-            component.componentDidMount();
+        } else if ( component.componentWillMount ) {
+            component.componentWillMount();
         }
 
         component._container = container;   // 保存父容器信息，用于更新
@@ -49,9 +51,8 @@ function _render( vnode, container ) {
     return container.appendChild( dom );
 }
 
-function render( vnode, container ) {
-    container.innerHTML = '';
-    return _render( vnode, container );
+function render( vnode, container, dom ) {
+    return diff( dom, vnode, container );
 }
 
 export default render;
