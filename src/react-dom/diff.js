@@ -1,3 +1,5 @@
+import { Componet } from '../react'
+
 export function diff( dom, vnode, container ) {
 
     const ret = diffNode( dom, vnode );
@@ -158,6 +160,8 @@ function diffComponent( dom, vnode ) {
 
         c = createComponent( vnode.tag, vnode.attrs );
 
+        console.log( c );
+
         setComponentProps( c, vnode.attrs );
         dom = c.base;
 
@@ -184,11 +188,34 @@ function setComponentProps( component, props ) {
 
 }
 
-function renderComponent( component ) {
+export function renderComponent( component ) {
+
+    let base;
+
+    const renderer = component.render();
+
+    base = diffNode( component.dom, renderer );
+
+    component.base = base;
+    base._component = component;
 
 }
 
-function createComponent() {
+function createComponent( component, props ) {
+
+    let inst;
+
+    if ( component.prototype && component.prototype.render ) {
+		inst = new component( props );
+	} else {
+		inst = new Component(props, context);
+		inst.constructor = component;
+		inst.render = function() {
+            return this.constructor( props );
+        }
+	}
+
+    return inst;
 
 }
 
@@ -221,52 +248,10 @@ function diffAttributes( dom, vnode ) {
 
 }
 
+function removeNode( dom ) {
 
-function buildComponentFromVNode( dom, vnode ) {
-
-
-
-    let c = dom && dom._component,
-		originalComponent = c,
-		oldDom = dom,
-		isDirectOwner = c && dom._componentConstructor===vnode.tag,
-		isOwner = isDirectOwner,
-		props = getNodeProps(vnode);
-
-
-	while (c && !isOwner && (c=c._parentComponent)) {
-		isOwner = c.constructor===vnode.tag;
-	}
-
-	if (c && isOwner && (!mountAll || c._component)) {
-		setComponentProps(c, props, ASYNC_RENDER, context, mountAll);
-		dom = c.base;
-	}
-	else {
-		if (originalComponent && !isDirectOwner) {
-			unmountComponent(originalComponent);
-			dom = oldDom = null;
-		}
-
-		c = createComponent(vnode.tag, props, context);
-		if (dom && !c.nextBase) {
-			c.nextBase = dom;
-			// passing dom/oldDom as nextBase will recycle it if unused, so bypass recycling on L229:
-			oldDom = null;
-		}
-		setComponentProps(c, props, SYNC_RENDER, context, mountAll);
-		dom = c.base;
-
-		if (oldDom && dom!==oldDom) {
-			oldDom._component = null;
-			recollectNodeTree(oldDom, false);
-		}
-	}
-
-	return dom;
-}
-
-function removeNode() {
-
+    if ( dom && dom.parentNode ) {
+        dom.parentNode.removeChild( dom );
+    }
 
 }

@@ -1,4 +1,4 @@
-import render from '../react-dom/render'
+import { renderComponent } from '../react-dom/diff'
 
 class Component {
     constructor( props = {} ) {
@@ -10,9 +10,7 @@ class Component {
 
     setState( stateChange ) {
         Object.assign( this.state, stateChange );
-        if ( this._container ) {
-            render( this, this._container, this.ref );
-        }
+        renderComponent( this );
     }
 }
 

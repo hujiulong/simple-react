@@ -40,61 +40,66 @@ class Welcome extends React.Component {
         return <h1>Hello, {this.props.name}</h1>;
     }
 }
-
-ReactDOM.render(
-    <Welcome name="Jack" />,
-    document.getElementById( 'root' )
-);
-// //
-// // class App extends React.Component {
-// //     constructor( props ) {
-// //         super( props );
-// //         this.state = {};
-// //     }
-// //     render() {
-// //         return (
-// //             <div>
-// //                 <Welcome name="Sara" />
-// //                 <Welcome name="Cahal" />
-// //                 <Welcome name="Edite" />
-// //             </div>
-// //         );
-// //     }
-// // }
 //
-// class Counter extends React.Component {
+//
+// class App extends React.Component {
 //     constructor( props ) {
 //         super( props );
-//         this.state = {
-//             num: 0
-//         }
+//         this.state = {};
 //     }
-//
-//     onClick() {
-//         this.setState( { num: this.state.num + 1 } );
-//     }
-//
-//     componentDidUpdate() {
-//         console.log( 'update' );
-//     }
-//
-//     componentDidMount() {
-//         console.log( 'mount' );
-//     }
-//
 //     render() {
 //         return (
-//             <div onClick={ () => this.onClick()}>
-//                 <Welcome name={this.state.num} />
+//             <div>
+//                 <Welcome name="Sara" />
 //                 <Welcome name="Cahal" />
 //                 <Welcome name="Edite" />
 //             </div>
 //         );
-//         return <h1 onClick={ () => this.onClick() }>Number: {this.state.num}</h1>;
 //     }
 // }
 //
 // ReactDOM.render(
-//     <Counter />,
+//     <App />,
 //     document.getElementById( 'root' )
 // );
+//
+class Counter extends React.Component {
+    constructor( props ) {
+        super( props );
+        this.state = {
+            num: 0
+        }
+
+        setInterval( () => {
+            this.setState( { num: this.state.num + 1 } );
+        }, 1000 );
+    }
+
+    onClick() {
+        this.setState( { num: this.state.num + 1 } );
+    }
+
+    componentDidUpdate() {
+        console.log( 'update' );
+    }
+
+    componentDidMount() {
+        console.log( 'mount' );
+    }
+
+    render() {
+        return (
+            <div onClick={ () => this.onClick()}>
+                <Welcome name={this.state.num} />
+                <Welcome name="Cahal" />
+                <Welcome name="Edite" />
+            </div>
+        );
+        return <h1 onClick={ () => this.onClick() }>Number: {this.state.num}</h1>;
+    }
+}
+
+ReactDOM.render(
+    <Counter />,
+    document.getElementById( 'root' )
+);
