@@ -1,4 +1,5 @@
 import { Componet } from '../react'
+import { setAttribute } from './dom'
 
 export function diff( dom, vnode, container ) {
 
@@ -65,8 +66,6 @@ function diffNode( dom, vnode ) {
 }
 
 function diffChildren( dom, vchildren ) {
-
-    console.log( dom, vchildren )
 
     const domChildren = dom.childNodes;
     const children = [];
@@ -160,8 +159,6 @@ function diffComponent( dom, vnode ) {
 
         c = createComponent( vnode.tag, vnode.attrs );
 
-        console.log( c );
-
         setComponentProps( c, vnode.attrs );
         dom = c.base;
 
@@ -184,6 +181,8 @@ function setComponentProps( component, props ) {
 		component.componentWillReceiveProps( props, context );
 	}
 
+    component.props = props;
+
     renderComponent( component );
 
 }
@@ -194,10 +193,18 @@ export function renderComponent( component ) {
 
     const renderer = component.render();
 
-    base = diffNode( component.dom, renderer );
+    if ( component.base && component.componentWillUpdate ) {
+        component.componentWillUpdate();
+    }
+
+    base = diffNode( component.base, renderer );
 
     component.base = base;
     base._component = component;
+
+    if ( component.componentDidUpdate ) {
+        component.componentDidUpdate();
+    }
 
 }
 
@@ -208,7 +215,7 @@ function createComponent( component, props ) {
     if ( component.prototype && component.prototype.render ) {
 		inst = new component( props );
 	} else {
-		inst = new Component(props, context);
+		inst = new Component( props );
 		inst.constructor = component;
 		inst.render = function() {
             return this.constructor( props );
@@ -233,18 +240,21 @@ function diffAttributes( dom, vnode ) {
     const old = dom.attributes;
     const attrs = vnode.attrs;
 
-    // for ( let name in old ) {
-	// 	if ( !( attrs && !!attrs[ name ] ) && !!old[ name ] ) {
-	// 		setAccessor( dom, name, old[ name ], old[ name ] = undefined );
-	// 	}
-	// }
-    //
-	// // add new & update changed attributes
-	// for (name in attrs) {
-	// 	if (name!=='children' && name!=='innerHTML' && (!(name in old) || attrs[name]!==(name==='value' || name==='checked' ? dom[name] : old[name]))) {
-	// 		setAccessor(dom, name, old[name], old[name] = attrs[name], isSvgMode);
-	// 	}
-	// }
+    for ( let name in old ) {
+
+        if ( !( name in attrs ) ) {
+            setAttribute( dom, name, undefined );
+        }
+
+    }
+
+    for ( let name in attrs ) {
+
+        if ( old[ name ] !== attrs[ name ] ) {
+            setAttribute( dom, name, attrs[ name ] );
+        }
+
+    }
 
 }
 

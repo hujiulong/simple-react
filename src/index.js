@@ -31,48 +31,22 @@ import ReactDOM from './react-dom'
 // );
 //
 //
-class Welcome extends React.Component {
+class Title extends React.Component {
     constructor( props ) {
         super( props );
         this.state = {};
     }
     render() {
-        return <h1>Hello, {this.props.name}</h1>;
+        return <h1>{this.props.content}</h1>;
     }
 }
-//
-//
-// class App extends React.Component {
-//     constructor( props ) {
-//         super( props );
-//         this.state = {};
-//     }
-//     render() {
-//         return (
-//             <div>
-//                 <Welcome name="Sara" />
-//                 <Welcome name="Cahal" />
-//                 <Welcome name="Edite" />
-//             </div>
-//         );
-//     }
-// }
-//
-// ReactDOM.render(
-//     <App />,
-//     document.getElementById( 'root' )
-// );
-//
+
 class Counter extends React.Component {
     constructor( props ) {
         super( props );
         this.state = {
-            num: 0
+            num: 1
         }
-
-        setInterval( () => {
-            this.setState( { num: this.state.num + 1 } );
-        }, 1000 );
     }
 
     onClick() {
@@ -90,12 +64,10 @@ class Counter extends React.Component {
     render() {
         return (
             <div onClick={ () => this.onClick()}>
-                <Welcome name={this.state.num} />
-                <Welcome name="Cahal" />
-                <Welcome name="Edite" />
+                <Title content="count:" />
+                <div><Title content={ this.state.num } /></div>
             </div>
         );
-        return <h1 onClick={ () => this.onClick() }>Number: {this.state.num}</h1>;
     }
 }
 
