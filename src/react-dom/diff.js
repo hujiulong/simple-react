@@ -1,6 +1,12 @@
 import { Componet } from '../react'
 import { setAttribute } from './dom'
 
+/**
+ * @param {HTMLElement} dom 真实DOM
+ * @param {vnode} vnode 虚拟DOM
+ * @param {HTMLElement} container 容器
+ * @returns {HTMLElement} 更新后的DOM
+ */
 export function diff( dom, vnode, container ) {
 
     const ret = diffNode( dom, vnode );
@@ -24,10 +30,12 @@ function diffNode( dom, vnode ) {
     // diff text node
     if ( typeof vnode === 'string' ) {
 
-        if ( dom && dom.nodeType === 3 ) {
+        // 如果当前的DOM就是文本节点，则直接更新内容
+        if ( dom && dom.nodeType === 3 ) {    // nodeType: https://developer.mozilla.org/zh-CN/docs/Web/API/Node/nodeType
             if ( dom.textContent !== vnode ) {
                 dom.textContent = vnode;
             }
+        // 如果DOM不是文本节点，则新建一个文本节点DOM，并移除掉原来的
         } else {
             out = document.createTextNode( vnode );
             if ( dom && dom.parentNode ) {
@@ -43,14 +51,14 @@ function diffNode( dom, vnode ) {
     }
 
     //
-    if ( !dom || dom.nodeName.toLowerCase() !== vnode.tag.toLowerCase() ) {
+    if ( !dom || !isSameNodeType( dom, vnode ) ) {
         out = document.createElement( vnode.tag );
 
         if ( dom ) {
-            [ ...dom.childNodes ].map( out.appendChild );
+            [ ...dom.childNodes ].map( out.appendChild );    // 将原来的子节点移到新节点下
 
             if ( dom.parentNode ) {
-                dom.parentNode.replaceChild( out, dom );
+                dom.parentNode.replaceChild( out, dom );    // 移除掉原来的DOM对象
             }
         }
     }
@@ -147,9 +155,11 @@ function diffComponent( dom, vnode ) {
     let c = dom && dom._component;
     let oldDom = dom;
 
+    // 如果组件类型没有变化，则重新set props
     if ( c && c.constructor === vnode.tag ) {
         setComponentProps( c, vnode.attrs );
         dom = c.base;
+    // 如果组件类型变化，则移除掉原来组件，并渲染新的组件
     } else {
 
         if ( c ) {
@@ -178,7 +188,7 @@ function setComponentProps( component, props ) {
     if ( !component.base ) {
 		if ( component.componentWillMount ) component.componentWillMount();
 	} else if ( component.componentWillReceiveProps ) {
-		component.componentWillReceiveProps( props, context );
+		component.componentWillReceiveProps( props );
 	}
 
     component.props = props;
@@ -202,9 +212,14 @@ export function renderComponent( component ) {
     component.base = base;
     base._component = component;
 
-    if ( component.componentDidUpdate ) {
-        component.componentDidUpdate();
+    if ( component.base ) {
+        if ( component.componentDidUpdate ) component.componentDidUpdate();
+    } else if ( component.componentDidMount ) {
+        component.componentDidMount();
     }
+
+    component.base = base;
+    base._component = component;
 
 }
 
@@ -231,15 +246,24 @@ function unmountComponent( component ) {
     removeNode( component.base);
 }
 
-function isSameNodeType() {
-    return true;
+function isSameNodeType( dom, vnode ) {
+    if ( typeof vnode === 'string' || typeof vnode === 'number' ) {
+		return dom.nodeType === 3;
+	}
+
+	if ( typeof vnode.tag === 'string' ) {
+        return dom.nodeName.toLowerCase() === vnode.tag.toLowerCase();
+	}
+
+	return dom && dom._component && dom._component.constructor === vnode.tag;
 }
 
 function diffAttributes( dom, vnode ) {
 
-    const old = dom.attributes;
-    const attrs = vnode.attrs;
+    const old = dom.attributes;    // 当前DOM的属性
+    const attrs = vnode.attrs;     // 虚拟DOM的属性
 
+    // 如果原来的属性不在新的属性当中，则将其移除掉（属性值设为undefined）
     for ( let name in old ) {
 
         if ( !( name in attrs ) ) {
@@ -248,6 +272,7 @@ function diffAttributes( dom, vnode ) {
 
     }
 
+    // 更新新的属性值
     for ( let name in attrs ) {
 
         if ( old[ name ] !== attrs[ name ] ) {
