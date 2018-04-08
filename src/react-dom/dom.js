@@ -17,7 +17,7 @@ export function setAttribute( dom, name, value ) {
             }
         }
     // 普通属性则直接更新属性
-    } else
+    } else {
         if ( name in dom ) {
             dom[ name ] = value || '';
         }
