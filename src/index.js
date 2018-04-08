@@ -1,51 +1,16 @@
 import React from './react'
 import ReactDOM from './react-dom'
 
-// function Welcome(props) {
-//     return <h1>Hello, {props.name}</h1>;
-// }
-
-// function App() {
-//     return (
-//         <div>
-//             <Welcome name="Sara" />
-//             <Welcome name="Cahal" />
-//             <Welcome name="Edite" />
-//         </div>
-//     );
-// }
-//
-// ReactDOM.render(
-//     <App />,
-//     document.getElementById( 'root' )
-// );
-
-
-class Welcome extends React.Component {
+class Title extends React.Component {
     constructor( props ) {
         super( props );
         this.state = {};
     }
     render() {
-        return <h1>Hello, {this.props.name}</h1>;
+        return <h1>{this.props.content}</h1>;
     }
 }
-//
-// class App extends React.Component {
-//     constructor( props ) {
-//         super( props );
-//         this.state = {};
-//     }
-//     render() {
-//         return (
-//             <div>
-//                 <Welcome name="Sara" />
-//                 <Welcome name="Cahal" />
-//                 <Welcome name="Edite" />
-//             </div>
-//         );
-//     }
-// }
+
 
 class Counter extends React.Component {
     constructor( props ) {
@@ -69,10 +34,10 @@ class Counter extends React.Component {
 
     render() {
         return (
-            <div onClick={ () => this.onClick()}>
-                <Welcome name={this.state.num} />
-                <Welcome name="Cahal" />
-                <Welcome name="Edite" />
+            <div>
+                <Title content="count:" />
+                <Title content={this.state.num} />
+                <button onClick={ () => this.onClick()}>add</button>
             </div>
         );
         return <h1 onClick={ () => this.onClick() }>Number: {this.state.num}</h1>;

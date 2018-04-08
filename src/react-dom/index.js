@@ -1,5 +1,5 @@
-import render from './render'
-
+import { render, renderComponent } from './render'
 export default {
-    render
+    render,
+    renderComponent
 }

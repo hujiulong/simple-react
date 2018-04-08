@@ -1,4 +1,4 @@
-import ReactDOM from '../react-dom'
+import { renderComponent } from '../react-dom/render'
 
 class Component {
     constructor( props = {} ) {
@@ -10,9 +10,7 @@ class Component {
 
     setState( stateChange ) {
         Object.assign( this.state, stateChange );
-        if ( this._container ) {
-            ReactDOM.render( this, this._container );
-        }
+        renderComponent( this );
     }
 }
 
