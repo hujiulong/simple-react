@@ -6,11 +6,11 @@
 
 相关文章:
 
-* 分支 [chapter-3](https://github.com/hujiulong/simple-react/tree/chapter-3) - [从零开始实现一个React（三）：diff算法](https://github.com/hujiulong/blog/issues/6)
-* 分支 [chapter-2](https://github.com/hujiulong/simple-react/tree/chapter-2) - [从零开始实现一个React（二）：组件和生命周期](https://github.com/hujiulong/blog/issues/5)
-* 分支 [chapter-1](https://github.com/hujiulong/simple-react/tree/chapter-1) - [从零开始实现一个React（一）：JSX和虚拟DOM](https://github.com/hujiulong/blog/issues/4)
+* 分支 [chapter-3](https://github.com/hujiulong/simple-react/tree/chapter-3) - 对应文章：[从零开始实现一个React（三）：diff算法](https://github.com/hujiulong/blog/issues/6)
+* 分支 [chapter-2](https://github.com/hujiulong/simple-react/tree/chapter-2) - 对应文章：[从零开始实现一个React（二）：组件和生命周期](https://github.com/hujiulong/blog/issues/5)
+* 分支 [chapter-1](https://github.com/hujiulong/simple-react/tree/chapter-1) - 对应文章：[从零开始实现一个React（一）：JSX和虚拟DOM](https://github.com/hujiulong/blog/issues/4)
 
-# 运行
+## 运行
 ```bash
 git clone https://github.com/hujiulong/simple-react.git
 cd simple-react
