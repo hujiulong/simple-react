@@ -209,9 +209,6 @@ export function renderComponent( component ) {
 
     base = diffNode( component.base, renderer );
 
-    component.base = base;
-    base._component = component;
-
     if ( component.base ) {
         if ( component.componentDidUpdate ) component.componentDidUpdate();
     } else if ( component.componentDidMount ) {

@@ -1,4 +1,4 @@
-import { renderComponent } from '../react-dom/diff'
+import { enqueueSetState } from './set-state-queue'
 
 class Component {
     constructor( props = {} ) {
@@ -9,8 +9,7 @@ class Component {
     }
 
     setState( stateChange ) {
-        Object.assign( this.state, stateChange );
-        renderComponent( this );
+        enqueueSetState( stateChange, this );
     }
 }
 
