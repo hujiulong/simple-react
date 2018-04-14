@@ -28,16 +28,20 @@ function flush() {
 
         const { stateChange, component } = item;
 
-        if ( typeof stateChange === 'function' ) {
-            if ( !component.prevState ) {
-                component.prevState = Object.assign( {}, component.state );
-            }
+        // 如果没有prevState，则将当前的state作为初始的prevState
+        if ( !component.prevState ) {
+            component.prevState = Object.assign( {}, component.state );
+        }
 
+        // 如果stateChange是一个方法，也就是setState的第二种形式
+        if ( typeof stateChange === 'function' ) {
             Object.assign( component.state, stateChange( component.prevState, component.props ) );
-            component.prevState = component.state;
         } else {
+            // 如果stateChange是一个对象，则直接合并到setState中
             Object.assign( component.state, stateChange );
         }
+
+        component.prevState = component.state;
 
     }
 
@@ -46,3 +50,6 @@ function flush() {
     }
 
 }
+
+
+Promise.resolve().then( () => console.log( 2 ) );
