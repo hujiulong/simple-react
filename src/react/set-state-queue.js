@@ -50,6 +50,3 @@ function flush() {
     }
 
 }
-
-
-Promise.resolve().then( () => console.log( 2 ) );
