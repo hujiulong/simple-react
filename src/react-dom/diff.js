@@ -257,8 +257,13 @@ function isSameNodeType( dom, vnode ) {
 
 function diffAttributes( dom, vnode ) {
 
-    const old = dom.attributes;    // 当前DOM的属性
+    const old = {};    // 当前DOM的属性
     const attrs = vnode.attrs;     // 虚拟DOM的属性
+
+    for ( let i = 0 ; i < dom.attributes.length; i++ ) {
+        const attr = dom.attributes[ i ];
+        old[ attr.name ] = attr.value;
+    }
 
     // 如果原来的属性不在新的属性当中，则将其移除掉（属性值设为undefined）
     for ( let name in old ) {
