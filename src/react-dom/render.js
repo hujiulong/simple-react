@@ -1,4 +1,4 @@
-import { Componet } from '../react'
+import Component from '../react/component'
 import { setAttribute } from './dom'
 
 function createComponent( component, props ) {
