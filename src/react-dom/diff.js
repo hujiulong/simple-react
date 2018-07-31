@@ -1,4 +1,4 @@
-import { Componet } from '../react'
+import { Component } from '../react'
 import { setAttribute } from './dom'
 
 /**
@@ -85,7 +85,6 @@ function diffChildren( dom, vchildren ) {
             const child = domChildren[ i ];
             const key = child.key;
             if ( key ) {
-                keyedLen++;
                 keyed[ key ] = child;
             } else {
                 children.push( child );
@@ -115,7 +114,7 @@ function diffChildren( dom, vchildren ) {
 
                 for ( let j = min; j < childrenLen; j++ ) {
 
-                    let c = children[ j ];
+                    const c = children[ j ];
 
                     if ( c && isSameNodeType( c, vchild ) ) {
 
@@ -137,7 +136,7 @@ function diffChildren( dom, vchildren ) {
             const f = domChildren[ i ];
             if ( child && child !== dom && child !== f ) {
                 if ( !f ) {
-                    dom.appendChild(child);
+                    dom.appendChild( child );
                 } else if ( child === f.nextSibling ) {
                     removeNode( f );
                 } else {
@@ -225,11 +224,12 @@ function createComponent( component, props ) {
     let inst;
 
     if ( component.prototype && component.prototype.render ) {
+        /* eslint-disable-next-line new-cap */
         inst = new component( props );
     } else {
         inst = new Component( props );
         inst.constructor = component;
-        inst.render = function() {
+        inst.render = function () {
             return this.constructor( props );
         }
     }
@@ -240,7 +240,7 @@ function createComponent( component, props ) {
 
 function unmountComponent( component ) {
     if ( component.componentWillUnmount ) component.componentWillUnmount();
-    removeNode( component.base);
+    removeNode( component.base );
 }
 
 function isSameNodeType( dom, vnode ) {
@@ -260,13 +260,13 @@ function diffAttributes( dom, vnode ) {
     const old = {};    // 当前DOM的属性
     const attrs = vnode.attrs;     // 虚拟DOM的属性
 
-    for ( let i = 0 ; i < dom.attributes.length; i++ ) {
+    for ( let i = 0; i < dom.attributes.length; i++ ) {
         const attr = dom.attributes[ i ];
         old[ attr.name ] = attr.value;
     }
 
     // 如果原来的属性不在新的属性当中，则将其移除掉（属性值设为undefined）
-    for ( let name in old ) {
+    for ( const name in old ) {
 
         if ( !( name in attrs ) ) {
             setAttribute( dom, name, undefined );
@@ -275,7 +275,7 @@ function diffAttributes( dom, vnode ) {
     }
 
     // 更新新的属性值
-    for ( let name in attrs ) {
+    for ( const name in attrs ) {
 
         if ( old[ name ] !== attrs[ name ] ) {
             setAttribute( dom, name, attrs[ name ] );

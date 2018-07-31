@@ -22,9 +22,9 @@ class App extends React.Component {
         console.log( 'update' )
     }
     render() {
-        return (<div className="App">
+        return ( <div className='App'>
             <h1>{this.state.num}</h1>
-        </div>);
+        </div> );
     }
 }
 

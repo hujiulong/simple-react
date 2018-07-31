@@ -9,9 +9,9 @@ export function setAttribute( dom, name, value ) {
     // 如果属性名是style，则更新style对象
     } else if ( name === 'style' ) {
         if ( !value || typeof value === 'string' ) {
-            node.style.cssText = value || '';
+            dom.style.cssText = value || '';
         } else if ( value && typeof value === 'object' ) {
-            for ( let name in value ) {
+            for ( const name in value ) {
                 // 可以通过style={ width: 20 }这种形式来设置样式，可以省略掉单位px
                 dom.style[ name ] = typeof value[ name ] === 'number' ? value[ name ] + 'px' : value[ name ];
             }

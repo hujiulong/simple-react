@@ -24,7 +24,9 @@ export function enqueueSetState( stateChange, component ) {
 
 function flush() {
     let item, component;
-    while( item = setStateQueue.shift() ) {
+
+    /* eslint-disable-next-line no-cond-assign */
+    while ( item = setStateQueue.shift() ) {
 
         const { stateChange, component } = item;
 
@@ -45,7 +47,8 @@ function flush() {
 
     }
 
-    while( component = renderQueue.shift() ) {
+    /* eslint-disable-next-line no-cond-assign */
+    while ( component = renderQueue.shift() ) {
         renderComponent( component );
     }
 
