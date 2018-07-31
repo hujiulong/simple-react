@@ -123,8 +123,8 @@ function diffChildren( dom, vchildren ) {
                         children[ j ] = undefined;
 
                         if ( j === childrenLen - 1 ) childrenLen--;
-						if ( j === min ) min++;
-						break;
+                        if ( j === min ) min++;
+                        break;
 
                     }
 
@@ -135,15 +135,15 @@ function diffChildren( dom, vchildren ) {
             child = diffNode( child, vchild );
 
             const f = domChildren[ i ];
-			if ( child && child !== dom && child !== f ) {
-				if ( !f ) {
-					dom.appendChild(child);
-				} else if ( child === f.nextSibling ) {
-					removeNode( f );
-				} else {
-					dom.insertBefore( child, f );
-				}
-			}
+            if ( child && child !== dom && child !== f ) {
+                if ( !f ) {
+                    dom.appendChild(child);
+                } else if ( child === f.nextSibling ) {
+                    removeNode( f );
+                } else {
+                    dom.insertBefore( child, f );
+                }
+            }
 
         }
     }
@@ -172,8 +172,8 @@ function diffComponent( dom, vnode ) {
         setComponentProps( c, vnode.attrs );
         dom = c.base;
 
-		if ( oldDom && dom !== oldDom ) {
-			oldDom._component = null;
+        if ( oldDom && dom !== oldDom ) {
+            oldDom._component = null;
             removeNode( oldDom );
         }
 
@@ -186,10 +186,10 @@ function diffComponent( dom, vnode ) {
 function setComponentProps( component, props ) {
 
     if ( !component.base ) {
-		if ( component.componentWillMount ) component.componentWillMount();
-	} else if ( component.componentWillReceiveProps ) {
-		component.componentWillReceiveProps( props );
-	}
+        if ( component.componentWillMount ) component.componentWillMount();
+    } else if ( component.componentWillReceiveProps ) {
+        component.componentWillReceiveProps( props );
+    }
 
     component.props = props;
 
@@ -228,14 +228,14 @@ function createComponent( component, props ) {
     let inst;
 
     if ( component.prototype && component.prototype.render ) {
-		inst = new component( props );
-	} else {
-		inst = new Component( props );
-		inst.constructor = component;
-		inst.render = function() {
+        inst = new component( props );
+    } else {
+        inst = new Component( props );
+        inst.constructor = component;
+        inst.render = function() {
             return this.constructor( props );
         }
-	}
+    }
 
     return inst;
 
@@ -248,14 +248,14 @@ function unmountComponent( component ) {
 
 function isSameNodeType( dom, vnode ) {
     if ( typeof vnode === 'string' || typeof vnode === 'number' ) {
-		return dom.nodeType === 3;
-	}
+        return dom.nodeType === 3;
+    }
 
-	if ( typeof vnode.tag === 'string' ) {
+    if ( typeof vnode.tag === 'string' ) {
         return dom.nodeName.toLowerCase() === vnode.tag.toLowerCase();
-	}
+    }
 
-	return dom && dom._component && dom._component.constructor === vnode.tag;
+    return dom && dom._component && dom._component.constructor === vnode.tag;
 }
 
 function diffAttributes( dom, vnode ) {
