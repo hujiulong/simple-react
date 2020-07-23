@@ -85,7 +85,6 @@ function diffChildren( dom, vchildren ) {
             const child = domChildren[ i ];
             const key = child.key;
             if ( key ) {
-                keyedLen++;
                 keyed[ key ] = child;
             } else {
                 children.push( child );
